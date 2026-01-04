@@ -73,11 +73,14 @@
     <hr>
 
     <h2>Itens Lidos e Quantidade</h2>
+    <button id="export-btn" style="margin-bottom:10px;padding:8px 12px;border-radius:4px;border:1px solid #28a745;background:#28a745;color:#fff;cursor:pointer;">Exportar para Excel</button>
     <div id="results-container">
         <p id="no-data">Nenhum item lido ainda.</p>
     </div>
 
     <script src="stockData.js"></script>
+    <!-- SheetJS (xlsx) para gerar arquivos Excel no cliente -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
     <script>
         let products = stockData;
@@ -179,6 +182,20 @@
 
             resultsContainer.innerHTML = tableHTML;
         }
+
+        function exportTableToExcel() {
+            const table = document.getElementById('results-table');
+            if (!table) {
+                alert('Nenhum dado para exportar. Escaneie alguns produtos primeiro.');
+                return;
+            }
+
+            const wb = XLSX.utils.table_to_book(table, { sheet: 'Itens' });
+            const filename = `inventario_${new Date().toISOString().slice(0,10)}.xlsx`;
+            XLSX.writeFile(wb, filename);
+        }
+
+        document.getElementById('export-btn').addEventListener('click', exportTableToExcel);
 
         // Renderiza a tabela inicial (vazia)
         renderResults();
