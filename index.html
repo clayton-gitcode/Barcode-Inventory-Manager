@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador de Códigos de Barras com Inventário</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1, h2 {
+            color: #007bff;
+        }
+        #barcode-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        #results-container {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+        #results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        #results-table th, #results-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        #results-table th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        .count {
+            color: #28a745;
+            font-weight: bold;
+            text-align: center;
+        }
+        .not-found {
+            background-color: #ffdddd;
+            color: #cc0000;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Contador de Códigos de Barras com Inventário 🛒</h1>
+    <p>Use um leitor de código de barras para escanear ou digite o código e pressione **Enter**.</p>
+    
+    <input type="text" id="barcode-input" placeholder="Aguardando leitura do código de barras..." autofocus>
+    
+    <div id="message-area"></div>
+    
+    <hr>
+
+    <h2>Itens Lidos e Quantidade</h2>
+    <div id="results-container">
+        <p id="no-data">Nenhum item lido ainda.</p>
+    </div>
+
+    <script src="stockData.js"></script>
+
+    <script>
+        let products = stockData;
+
+        const inputField = document.getElementById('barcode-input');
+        const resultsContainer = document.getElementById('results-container');
+        const messageArea = document.getElementById('message-area');
+
+        // Foca automaticamente no campo de entrada
+        inputField.focus();
+
+        inputField.addEventListener('keypress', function(event) {
+            // Verifica se a tecla pressionada é Enter
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                
+                const barcode = inputField.value.trim();
+                
+                if (barcode) {
+                    // Lógica principal: buscar e incrementar a quantidade
+                    processBarcode(barcode);
+                    
+                    // Limpa o campo e mantém o foco
+                    inputField.value = '';
+                }
+
+                inputField.focus();
+            }
+        });
+
+        function processBarcode(barcode) {
+            // Busca o produto no array usando a chave 'EAN_1'
+            const foundProduct = products.find(product => product.EAN_1 === barcode);
+
+            // Limpa mensagens anteriores
+            messageArea.innerHTML = '';
+            
+            if (foundProduct) {
+                // INCREMENTA a coluna 'qtd' (agora existente)
+                foundProduct.qtd += 1;
+                
+                // Atualiza a exibição na tela
+                renderResults();
+            } else {
+                // Se o produto NÃO for encontrado:
+                messageArea.innerHTML = `<div class="not-found">🚫 Código "${barcode}" não encontrado no inventário!</div>`;
+            }
+        }
+
+        function renderResults() {
+            // Filtra produtos que foram lidos (qtd > 0)
+            const itemsLidos = products.filter(product => product.qtd > 0);
+
+            // Ordena alfabeticamente por nome do produto (campo 'PRODUTO')
+            itemsLidos.sort((a, b) => {
+                const aName = String(a.PRODUTO || '').normalize('NFD');
+                const bName = String(b.PRODUTO || '').normalize('NFD');
+                return aName.localeCompare(bName, 'pt-BR', { sensitivity: 'base' });
+            });
+            
+            if (itemsLidos.length === 0) {
+                resultsContainer.innerHTML = '<p id="no-data">Nenhum item lido ainda.</p>';
+                return;
+            }
+
+            // Cria a estrutura da tabela
+            let tableHTML = `
+                <table id="results-table">
+                    <thead>
+                        <tr>
+                            <th>CÓDIGO</th>
+                            <th>LABORATÓRIO</th>
+                            <th>NOME DO PRODUTO</th>
+                            <th>APRESENTAÇÃO</th>
+                            <th style="width: 100px;">QTD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            // Preenche as linhas da tabela
+            itemsLidos.forEach(product => {
+                
+                tableHTML += `
+                    <tr>
+                        <td>${product.EAN_1}</td>
+                        <td>${product.LABORATORIO}</td>
+                        <td>${product.PRODUTO}</td>
+                        <td>${product.APRESENTACAO}</td>
+                        <td class="count">${product.qtd}</td>
+                    </tr>
+                `;
+            });
+            
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+
+            resultsContainer.innerHTML = tableHTML;
+        }
+
+        // Renderiza a tabela inicial (vazia)
+        renderResults();
+    </script>
+</body>
+</html>
