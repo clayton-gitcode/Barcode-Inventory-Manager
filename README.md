@@ -27,7 +27,7 @@ Este projeto foi desenvolvido para otimizar o processo de inventário farmacêut
 ## 📸 Demonstração Visual
 
 | Desktop View | Mobile View |
-![alt text](image.png)
+![alt text](image.jpeg)
 
 ---
 
