@@ -1,10 +1,10 @@
 # 📦 Barcode Inventory Manager
 
-> Uma ferramenta ágil para contagem de estoque e inventário farmacêutico através da leitura de códigos de barras.
+> Uma ferramenta ágil para contagem de estoque e inventário farmacêutico através da leitura de códigos de barras, voltada ao controle de medicamentos sujeitos a prescrição especial e antibióticos.
 
 ## 🎯 Sobre o Projeto
 
-Este projeto foi desenvolvido para otimizar o processo de inventário. Em vez de planilhas manuais complexas, a aplicação permite que o usuário utilize um leitor de código de barras para identificar produtos instantaneamente em uma base de dados pré-definida, incrementando a quantidade de forma automatizada e organizada.
+Este projeto foi desenvolvido para otimizar o processo de inventário farmacêutico, especialmente no controle de medicamentos sujeitos a prescrição especial e antibióticos. Em vez de depender de planilhas manuais complexas, a aplicação permite que o farmacêutico utilize um leitor de código de barras para identificar os produtos instantaneamente em uma base de dados pré-definida, incrementando a quantidade de forma automatizada e organizada.
 
 ### 🛠️ Tecnologias Utilizadas
 
