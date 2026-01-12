@@ -18,9 +18,10 @@ for (let i = 1; i < lines.length; i++) {
     if (cols.length >= 4) {
         stockData.push({
             LABORATORIO: cols[0].trim(),
-            EAN_1: cols[1].trim(),
-            PRODUTO: cols[2].trim(),
-            APRESENTACAO: cols[3].trim(), // .trim() remove o \r e espaços extras
+            REGISTRO_MS: cols[1].trim(),
+            EAN_1: cols[2].trim(),
+            PRODUTO: cols[3].trim(),
+            APRESENTACAO: cols[4].trim(), // .trim() remove o \r e espaços extras
             qtd: 0
         });
     }

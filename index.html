@@ -152,9 +152,10 @@
                     <thead>
                         <tr>
                             <th>CÓDIGO</th>
-                            <th>LABORATÓRIO</th>
-                            <th>NOME DO PRODUTO</th>
+                            <th>MEDICAMENTO</th>
                             <th>APRESENTAÇÃO</th>
+                            <th>LABORATÓRIO</th>
+                            <th>REGISTRO MS</th>
                             <th style="width: 100px;">QTD</th>
                         </tr>
                     </thead>
@@ -167,9 +168,10 @@
                 tableHTML += `
                     <tr>
                         <td>${product.EAN_1}</td>
-                        <td>${product.LABORATORIO}</td>
                         <td>${product.PRODUTO}</td>
                         <td>${product.APRESENTACAO}</td>
+                        <td>${product.LABORATORIO}</td>
+                        <td>${product.REGISTRO_MS}</td>
                         <td class="count">${product.qtd}</td>
                     </tr>
                 `;
