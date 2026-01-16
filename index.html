@@ -92,7 +92,7 @@
         <p id="no-data">Nenhum item lido ainda.</p>
     </div>
     <footer style="color:#333; text-align:center; padding:15px; font-family:Arial, sans-serif;">
-        <p>&copy; <span id="ano"></span> - Clayton Lima | Matrícula: 121719</p>
+        <p>&copy; 2026 - Clayton Lima | Matrícula: 121719</p>
     </footer>
 
     <script src="stockData.js"></script>
@@ -100,7 +100,6 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
     <script>
-        document.getElementById("ano").textContent = new Date.getFullYear()
         let products = stockData;
 
         const inputField = document.getElementById('barcode-input');
@@ -131,14 +130,17 @@
 
         function processBarcode(barcode) {
             // Busca o produto no array usando a chave 'EAN_1'
-            const foundProduct = products.find(product => product.EAN_1 === barcode);
+            const foundProduct = products.filter(product => product.EAN_1 === barcode);
 
             // Limpa mensagens anteriores
             messageArea.innerHTML = '';
 
-            if (foundProduct) {
+            if (foundProduct.length > 0) {
                 // INCREMENTA a coluna 'qtd' (agora existente)
-                foundProduct.qtd += 1;
+                foundProduct.forEach(element => {
+                    element.qtd+=1;
+                });
+                //foundProduct.qtd += 1;
 
                 // Atualiza a exibição na tela
                 renderResults();
